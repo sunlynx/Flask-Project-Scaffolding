@@ -2,6 +2,7 @@ from flask import Flask
 from config.initializer import config
 from routes.initializer import router
 from database.initializer import db
+from flask import render_template
 import os
 
 
@@ -13,7 +14,11 @@ db.init_app(app)
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    """
+    return welcome page when access route page with get requests
+    :return:
+    """
+    return render_template('welcome.html')
 
 
 if __name__ == '__main__':
