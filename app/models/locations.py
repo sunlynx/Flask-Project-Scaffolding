@@ -1,5 +1,5 @@
 from app.models.basemodel import BaseModel
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey, text
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 
@@ -11,7 +11,7 @@ class Governates(BaseModel):
     """
     __tablename__ = 'governates'
 
-    id = Column(UUID(as_uuid=True), primary_key=True, server_default="uuid_generate_v4()",)
+    id = Column(UUID(as_uuid=True), primary_key=True, server_default=text("uuid_generate_v4()"),)
     name = Column(String(191), nullable=False,)
     code = Column(String(30), nullable=False,)
     areas = relationship("Areas", backref="governates")     # Bi-Directional Relationship
@@ -24,7 +24,7 @@ class Areas(BaseModel):
     """
     __tablename__ = 'areas'
 
-    id = Column(UUID(as_uuid=True), primary_key=True, server_default="uuid_generate_v4()", )
+    id = Column(UUID(as_uuid=True), primary_key=True, server_default=text("uuid_generate_v4()"), )
     name = Column(String(191), nullable=False, )
     code = Column(String(30), nullable=False, )
     governates_id = Column(UUID(as_uuid=True), ForeignKey('governates.id'))
@@ -38,8 +38,7 @@ class Villages(BaseModel):
     """
     __tablename__ = 'villages'
 
-    id = Column(UUID(as_uuid=True), primary_key=True, server_default="uuid_generate_v4()", )
+    id = Column(UUID(as_uuid=True), primary_key=True, server_default=text("uuid_generate_v4()"), )
     name = Column(String(191), nullable=False, )
     code = Column(String(30), nullable=False, )
     areas_id = Column(UUID(as_uuid=True), ForeignKey('areas.id'))
-
