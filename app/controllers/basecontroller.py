@@ -1,4 +1,5 @@
-from flask import request, jsonify, Response
+from flask import jsonify
+from flask import render_template
 
 
 class BaseController:
@@ -29,3 +30,10 @@ class BaseController:
         })
         response_construct.status_code = self.status_code
         return response_construct
+
+    def home_page(self):
+        """
+        return welcome page when access route page with get requests
+        :return:
+        """
+        return render_template('welcome.html')

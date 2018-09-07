@@ -13,8 +13,12 @@ class Governates(BaseModel):
 
     id = Column(UUID(as_uuid=True), primary_key=True, server_default=text("uuid_generate_v4()"),)
     name = Column(String(191), nullable=False,)
-    code = Column(String(30), nullable=False,)
+    code = Column(String(30), nullable=False, unique=True,)
     areas = relationship("Areas", backref="governates")     # Bi-Directional Relationship
+
+    def __init__(self, name, code):
+        self.name = name
+        self.code = code
 
 
 class Areas(BaseModel):
@@ -26,7 +30,7 @@ class Areas(BaseModel):
 
     id = Column(UUID(as_uuid=True), primary_key=True, server_default=text("uuid_generate_v4()"), )
     name = Column(String(191), nullable=False, )
-    code = Column(String(30), nullable=False, )
+    code = Column(String(30), nullable=False, unique=True,)
     governates_id = Column(UUID(as_uuid=True), ForeignKey('governates.id'))
     villages = relationship("Villages", backref="areas")
 
@@ -40,5 +44,5 @@ class Villages(BaseModel):
 
     id = Column(UUID(as_uuid=True), primary_key=True, server_default=text("uuid_generate_v4()"), )
     name = Column(String(191), nullable=False, )
-    code = Column(String(30), nullable=False, )
+    code = Column(String(30), nullable=False, unique=True, )
     areas_id = Column(UUID(as_uuid=True), ForeignKey('areas.id'))
