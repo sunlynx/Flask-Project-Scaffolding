@@ -1,5 +1,8 @@
 from app.serializers.baseserializer import BaseSerializer
 from lib.messages import Messages
+from database.initializer import ma
+from app.models.locations import Governates
+from marshmallow_sqlalchemy import ModelSchema
 
 
 class GovernateSerializer(BaseSerializer):
@@ -40,3 +43,10 @@ class GovernateSerializer(BaseSerializer):
     def delete(self):
         self.parser.add_argument('id', required=True, type=str, location='json', help=Messages.MANDATORY_FIELD)
         return self.parser.parse_args()
+
+
+class GovernateSchema(ModelSchema):
+    class Meta:
+        model = Governates
+        fields = ('id', 'name', 'code')
+

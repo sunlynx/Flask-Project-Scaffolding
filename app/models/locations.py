@@ -8,6 +8,10 @@ class Governates(BaseModel):
     """
     Locations having governate, and each governate has many areas
     Relationship: governate has many areas
+    Use if necessary:
+    default_fields = ['name', 'code']
+    hidden_fields = ['code']
+    readonly_fields = ['code']
     """
     __tablename__ = 'governates'
 

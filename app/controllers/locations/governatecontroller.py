@@ -2,7 +2,7 @@ from flask_restful import Resource, reqparse
 from app.models.locations import Governates
 from app.exceptions.systemexceptions import UniqueConstraintException
 from app.controllers.basecontroller import BaseController
-from app.serializers.governateserializer import GovernateSerializer
+from app.serializers.governateserializer import GovernateSerializer, GovernateSchema
 from lib.messages import Messages
 from run import db
 
@@ -29,7 +29,8 @@ class GovernateController(BaseController, Resource):
         call the serializer
         :return:
         """
-        self.data_set = Governates.query.all()
+        governates_schema = GovernateSchema()
+        self.data_set = governates_schema.dump(Governates.query.all()).data
         return self.response()
 
     def post(self):
