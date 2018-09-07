@@ -1,8 +1,8 @@
 from flask import Flask
 from config.initializer import config
-from routes.initializer import router
 from database.initializer import db, migrate
 from flask import render_template
+from routes.api import *
 import os
 
 """

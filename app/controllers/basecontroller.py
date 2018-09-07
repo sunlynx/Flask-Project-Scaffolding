@@ -19,9 +19,13 @@ class BaseController:
         Return the response as a structured one
         :return:
         """
-        response_construct = {
+        response_construct = jsonify({
             'status': 'success',
             'data': self.data_set,
-            'error_message': self.error_message,
-        }
-        return Response(response_construct, status=self.status_code,  mimetype='application/json')
+            'error': {
+               'code': self.status_code,
+               'message': self.error_message
+            },
+        })
+        response_construct.status_code = self.status_code
+        return response_construct
