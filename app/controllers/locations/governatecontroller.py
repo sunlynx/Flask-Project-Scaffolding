@@ -29,7 +29,7 @@ class GovernateController(BaseController, Resource):
         call the serializer
         :return:
         """
-        governates_schema = GovernateSchema()
+        governates_schema = GovernateSchema(many=True)
         self.data_set = governates_schema.dump(Governates.query.all()).data
         return self.response()
 
@@ -44,5 +44,6 @@ class GovernateController(BaseController, Resource):
         governate = Governates(**arguments)
         db.session.add(governate)
         db.session.commit()
-        self.data_set = [Messages.GOVERNATE_INSERTED]
+        governates_schema = GovernateSchema()
+        self.data_set = governates_schema.dump(Governates.query.first()).data
         return self.response()

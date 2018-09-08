@@ -1,8 +1,7 @@
 from app.serializers.baseserializer import BaseSerializer
 from lib.messages import Messages
-from database.initializer import ma
 from app.models.locations import Governates
-from marshmallow_sqlalchemy import ModelSchema
+from marshmallow_sqlalchemy import ModelSchema, field_for
 
 
 class GovernateSerializer(BaseSerializer):
@@ -46,7 +45,13 @@ class GovernateSerializer(BaseSerializer):
 
 
 class GovernateSchema(ModelSchema):
+    # id = fields.Int(dump_only=True)
+    # first = fields.Str()
+    # last = fields.Str()
+    # formatted_name = fields.Method('format_name', dump_only=True)
+    #
+    # def format_name(self, author):
+    #     return '{}, {}'.format(author.last, author.first)
     class Meta:
         model = Governates
         fields = ('id', 'name', 'code')
-
