@@ -17,7 +17,7 @@ app.config['JSON_SORT_KEYS'] = False
 app.register_blueprint(errors)
 router.init_app(app)
 db.init_app(app)
-ma.init_app(app)
+# ma.init_app(app)
 migrate.init_app(app)
 
 
