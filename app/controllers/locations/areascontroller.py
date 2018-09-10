@@ -1,4 +1,4 @@
-from app.models.locations import Governates, GovernateSchema
+from app.models.locations import Areas, AreaSchema
 from flask import request
 from app.exceptions.systemexceptions import ModelNotFoundException
 from app.controllers.basecontroller import BaseController
@@ -7,7 +7,7 @@ from lib.messages import Messages
 from run import db
 
 
-class GovernateController(BaseController):
+class AreasController(BaseController):
     """
     Governate is a resource, super admin can perform CRUD operations on it
     Flask restful assign GET request to get method, similarly to other HTTP Request
@@ -18,9 +18,9 @@ class GovernateController(BaseController):
         call base controller constructor to initialize the class
         use middleware here
         """
-        super(GovernateController, self).__init__()
-        self.schemas = GovernateSchema(strict=True, many=True)
-        self.schema = GovernateSchema(strict=True, many=False)
+        super(AreasController, self).__init__()
+        self.schemas = AreaSchema(strict=True, many=True)
+        self.schema = AreaSchema(strict=True, many=False)
 
     def get(self):
         """
@@ -30,7 +30,7 @@ class GovernateController(BaseController):
         call the serializer
         :return:
         """
-        self.data_set = self.schemas.dump(Governates.query.all()).data
+        self.data_set = self.schemas.dump(Areas.query.all()).data
         return self.response()
 
     def post(self):
@@ -38,13 +38,13 @@ class GovernateController(BaseController):
         Validate all the request parameters
         :return:
         """
-        governate_load, errors = self.schema.load(request.get_json())
+        area_load, errors = self.schema.load(request.get_json(), partial=('id', ))
         if errors:
             raise ValidationError(errors)
-        governate = Governates(**governate_load)
-        db.session.add(governate)
+        area = Areas(**area_load)
+        db.session.add(area)
         db.session.commit()
-        self.data_set = self.schema.dump(governate).data
+        self.data_set = self.schema.dump(area).data
         return self.response()
 
     def put(self):
@@ -52,15 +52,17 @@ class GovernateController(BaseController):
         validate the request, and return object
         :return:
         """
-        governate_load = self.schema.load(request.get_json(), partial=('code', 'name', )).data
-        governate = Governates.query.get(governate_load['id'])
-        if governate is None:
+        area_load = self.schema.load(request.get_json(), partial=('code', 'name', )).data
+        area = Areas.query.get(area_load['id'])
+        if area is None:
             raise ModelNotFoundException(Messages.NO_RECORD_FOUND)
-        governate.code = governate_load['code']
-        governate.name = governate_load['name']
+
+        area.governates_id = area_load['governates_id']
+        area.code = area_load['code']
+        area.name = area_load['name']
         db.session.commit()
 
-        self.data_set = self.schema.dump(governate).data
+        self.data_set = self.schema.dump(area).data
         return self.response()
 
     def delete(self):
@@ -68,11 +70,11 @@ class GovernateController(BaseController):
         validate the request, and return object
         :return:
         """
-        governate_load = self.schema.load(request.get_json(), partial=('code', 'name', )).data
-        governate = Governates.query.get(governate_load['id'])
-        if governate is None:
+        area_load = self.schema.load(request.get_json(), partial=('code', 'name', )).data
+        area = Areas.query.get(area_load['id'])
+        if area is None:
             raise ModelNotFoundException(Messages.NO_RECORD_FOUND)
-        db.session.delete(governate)
+        db.session.delete(area)
         db.session.commit()
 
         self.data_set = Messages.SUCCESSFULLY_DELETED

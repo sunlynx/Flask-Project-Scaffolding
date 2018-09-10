@@ -21,11 +21,11 @@ class AppException(Exception):
         :return:
         """
         response_construct = jsonify({
-            'status': 'success',
+            'status': 'failure',
             'data': [],
             'error': {
-                'code': self.status_code,
-                'message': self.error_message,
+                'err_code': self.status_code,
+                'err_message': self.error_message,
             },
         })
 

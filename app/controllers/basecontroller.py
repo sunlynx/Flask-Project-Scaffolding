@@ -1,8 +1,8 @@
 from flask import jsonify
-from flask import render_template
+from flask_restful import Resource
 
 
-class BaseController:
+class BaseController(Resource):
     """
     Setup your base controller to provide basic functionality and helper alongside
     Constructor is access when derived called super() method
@@ -24,16 +24,9 @@ class BaseController:
             'status': 'success',
             'data': self.data_set,
             'error': {
-               'code': self.status_code,
-               'message': self.error_message
+               'err_code': self.status_code,
+               'err_message': self.error_message
             },
         })
         response_construct.status_code = self.status_code
         return response_construct
-
-    def home_page(self):
-        """
-        return welcome page when access route page with get requests
-        :return:
-        """
-        return render_template('welcome.html')
