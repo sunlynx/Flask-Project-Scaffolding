@@ -90,7 +90,7 @@ class VillageSchema(Schema):
 
     @validates('areas_id')
     def validates_villages_existence(self, value):
-        if Villages.query.get(value) is None:
+        if Areas.query.get(value) is None:
             raise ValidationError(Messages.NOT_EXISTS.format(value))
 
 
@@ -104,7 +104,7 @@ class AreaSchema(Schema):
     governates_id = fields.UUID(required=True)
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
-    villages = fields.Nested(VillageSchema)
+    villages = fields.Nested(VillageSchema, many=True)
 
     @validates('code')
     def validate_unique_code(self, value):
